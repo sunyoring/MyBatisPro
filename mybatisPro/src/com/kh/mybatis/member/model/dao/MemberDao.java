@@ -21,8 +21,13 @@ public class MemberDao {
 	}
 
 	public int updateMember(SqlSession sqlSession, Member m) {
-		// TODO Auto-generated method stub
-		return sqlSession.insert("memberMapper.updateMember" , m);
+		return sqlSession.update("memberMapper.updateMember" , m);
 	}
+
+	public int deleteMember(SqlSession sqlSession, String userIed) {
+
+		return sqlSession.delete("memberMapper.deleteMember" , userIed);
+	}
+
 
 }

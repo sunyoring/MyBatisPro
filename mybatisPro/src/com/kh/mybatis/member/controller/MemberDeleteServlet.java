@@ -1,6 +1,7 @@
 package com.kh.mybatis.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,17 +13,17 @@ import com.kh.mybatis.member.model.service.MemberServiceImpl;
 import com.kh.mybatis.member.model.vo.Member;
 
 /**
- * Servlet implementation class MemberUpdateServlet
+ * Servlet implementation class MemberDeleteServlet
  */
-@WebServlet("/update.me")
-public class MemberUpdateServlet extends HttpServlet {
+@WebServlet("/delete.me")
+public class MemberDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private MemberService memberService = new MemberServiceImpl();
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberUpdateServlet() {
+    public MemberDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,47 +32,23 @@ public class MemberUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		
 		String userId = ((Member)request.getSession().getAttribute("loginUser")).getUserId();
-		String userPwd = ((Member)request.getSession().getAttribute("loginUser")).getUserPwd();
-		String userName =((Member)request.getSession().getAttribute("loginUser")).getUserName();
-		String email = request.getParameter("email");
-		String birthday = request.getParameter("birthday");
-		String gender = request.getParameter("gender");
-		String phone = request.getParameter("phone");
-		String address = request.getParameter("address");
-		
-		Member m = new Member();
-		m.setUserId(userId);
-		m.setUserPwd(userPwd);
-		m.setUserName(userName);
-		m.setEmail(email);
-		m.setBirthday(birthday);
-		m.setGender(gender);
-		m.setPhone(phone);
-		m.setAddress(address);
-		
 
-		
-		
 		try {
-			memberService.updateMember(m);
 			
-			Member loginUser = memberService.loginMember(m);
-			if(loginUser != null) {
-				request.getSession().setAttribute("loginUser", loginUser);
-			}
-
+			memberService.deleteMember(userId);
+			request.getSession().invalidate();
 			response.sendRedirect(request.getContextPath());
-			
-	
-		} catch (Exception e) {
 
-			request.setAttribute("msg", "정보수정 실패");
-			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
+		}catch (Exception e) {
 			
-			e.printStackTrace();
+			request.setAttribute("msg", "탈퇴 실패");
+			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
+						e.printStackTrace();
+			
 		}
+		
 		
 	}
 

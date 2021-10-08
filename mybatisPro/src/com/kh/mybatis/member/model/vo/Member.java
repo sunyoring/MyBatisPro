@@ -51,6 +51,7 @@ public class Member {
 		this.status = status;
 	}
 
+
 	public int getUserNo() {
 		return userNo;
 	}

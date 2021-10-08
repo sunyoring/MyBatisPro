@@ -9,6 +9,8 @@ public interface MemberService {
 	void insertMember(Member m) throws Exception;
 
 	void updateMember(Member m) throws Exception;
+
+	void deleteMember(String userId) throws Exception;
 	
 
 }
