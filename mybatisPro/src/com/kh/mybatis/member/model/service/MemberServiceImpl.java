@@ -18,4 +18,37 @@ public class MemberServiceImpl implements MemberService {
 		return loginUser;
 	}
 
+	@Override
+	public void insertMember(Member m) throws Exception {
+		SqlSession sqlSession = getSqlSession();
+
+		int result = memberDao.insertMember(sqlSession, m);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}else {
+			sqlSession.rollback();
+			throw new Exception();
+		}
+		
+		sqlSession.close();
+		
+	}
+
+	@Override
+	public void updateMember(Member m) throws Exception {
+		SqlSession sqlSession = getSqlSession();
+
+		int result = memberDao.updateMember(sqlSession, m);
+		
+		if(result > 0) {
+			sqlSession.commit();
+		}else {
+			sqlSession.rollback();
+			throw new Exception();
+		}
+		
+		sqlSession.close();
+	}
+
 }

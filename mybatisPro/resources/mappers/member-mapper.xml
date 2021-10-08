@@ -32,6 +32,17 @@
   </select>
   
   
+  <insert id ="insertMember" parameterType ="Member">
+	INSERT INTO MEMBER
+		VALUES(SEQ_UNO.NEXTVAL, #{userId}, #{userPwd}, #{userName}, #{email},
+				#{birthday}, #{gender}, #{phone}, #{address}, SYSDATE, SYSDATE, DEFAULT)
+  
+  </insert>
+  
+  <update id="updateMember" parameterType ="Member">
+  </update>
+  
+  
 
   
   

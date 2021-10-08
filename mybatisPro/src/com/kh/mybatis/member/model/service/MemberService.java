@@ -5,6 +5,10 @@ import com.kh.mybatis.member.model.vo.Member;
 public interface MemberService {
 
 	Member loginMember(Member m);
+
+	void insertMember(Member m) throws Exception;
+
+	void updateMember(Member m) throws Exception;
 	
 
 }

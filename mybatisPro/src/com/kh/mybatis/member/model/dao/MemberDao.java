@@ -15,4 +15,14 @@ public class MemberDao {
 		return loginUser;
 	}
 
+	public int insertMember(SqlSession sqlSession, Member m) {
+
+		return sqlSession.insert("memberMapper.insertMember" , m);
+	}
+
+	public int updateMember(SqlSession sqlSession, Member m) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("memberMapper.updateMember" , m);
+	}
+
 }

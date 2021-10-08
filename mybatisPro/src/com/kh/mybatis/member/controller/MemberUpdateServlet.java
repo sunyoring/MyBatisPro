@@ -1,7 +1,6 @@
 package com.kh.mybatis.member.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,20 +12,17 @@ import com.kh.mybatis.member.model.service.MemberServiceImpl;
 import com.kh.mybatis.member.model.vo.Member;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class MemberUpdateServlet
  */
-@WebServlet("/login.me")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/update.me")
+public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private MemberService memberService = new MemberServiceImpl();
-	
-	
-       
+    private MemberService memberService = new MemberServiceImpl();
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public MemberUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,37 +31,29 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
+		String userName = request.getParameter("userName");
+		String email = request.getParameter("email");
+		String birthday = request.getParameter("birthday");
+		String gender = request.getParameter("gender");
+		String phone = request.getParameter("phone");
+		String address = request.getParameter("address");
 		
-		Member m = new Member();
-		m.setUserId(userId);
-		m.setUserPwd(userPwd);
+		Member m = new Member(userId, userPwd, userName, email, birthday, gender, phone, address);
 		
-		//기존 방식이라면 new MemberService().loginUser()로 했을 것이다.
-		// 모듈과 모듈의 관련정보가 있을 수록 결합도가 높다는 것이다. 결합도가 높으면 유지보수가 힘들기 때문에  결합도를 낮추는 것이다. 
-		// 인터페이스를 구현한다. -> 회사마다 다를 수는 있다 
-	
 		try {
-			Member loginUser = memberService.loginMember(m);
-
-			if(loginUser != null) {
-				
-				request.getSession().setAttribute("loginUser", loginUser);
-				response.sendRedirect(request.getContextPath());
-			}else {
-				throw new Exception();
-			}
-		}catch (Exception e) {
+			memberService.updateMember(m);
+			response.sendRedirect(request.getContextPath());
 			
-			request.setAttribute("msg", "로그인 실패");
+	
+		} catch (Exception e) {
+
+			request.setAttribute("msg", "정보수정 실패");
 			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
 			
 			e.printStackTrace();
 		}
-		
-
 		
 	}
 

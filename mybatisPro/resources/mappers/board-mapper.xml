@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">  
+	
+	<resultMap type="Board" id="boardResultMap">
+	  	<id property="boardNo" column="BOARD_NO" />
+	  	<id property="boardTitle" column="BOARD_TITLE" />
+	  	<id property="boardWriter" column="USER_ID" />
+	  	<id property="count" column="COUNT" />
+	  	<id property="createDate" column="CREATE_DATE" />
+
+	</resultMap>
+
+
+  <select id = "getListCount" resultType="_int">
+		  
+		  SELECT 
+		  COUNT(*)
+		  FROM BOARD
+		  WHERE STATUS = 'Y'
+  
+  </select>
+  
+  
+  <select id="selectList" resultMap = "boardResultMap">
+  
+ 		SELECT BOARD_NO, BOARD_TITLE, USER_ID, COUNT, CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER ON(BOARD_WRITER=USER_NO)
+		WHERE B.STATUS='Y'
+		ORDER BY BOARD_NO DESC
+  
+  </select>
+  
+  
+</mapper>
