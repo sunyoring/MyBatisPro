@@ -58,6 +58,8 @@ public class BoardListServelt extends HttpServlet {
 			
 		} catch (Exception e) {
 
+			request.setAttribute("msg", "리스트 불러오기 실패");
+			request.getRequestDispatcher("WEB-INF/views/common/errorPage.jsp").forward(request, response);
 			e.printStackTrace();
 		}
 		

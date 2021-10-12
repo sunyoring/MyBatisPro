@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kh.mybatis.board.model.vo.Board;
 import com.kh.mybatis.board.model.vo.PageInfo;
+import com.kh.mybatis.board.model.vo.SearchCondition;
 
 public class BoardDao {
 
@@ -14,6 +15,11 @@ public class BoardDao {
 
 		
 		return sqlSession.selectOne("boardMapper.getListCount");
+	}
+	
+	public int getListCountCon(SearchCondition sc, SqlSession sqlSession) {
+		
+		return sqlSession.selectOne("boardMapper.getListCountCon",sc);
 	}
 
 	public ArrayList<Board> selectList(SqlSession sqlSession, PageInfo pi) throws Exception  {
@@ -33,5 +39,25 @@ public class BoardDao {
 		
 		return 	(ArrayList)sqlSession.selectList("boardMapper.selectList", null , rowBounds); //두번째 인자는 파라미터 타입이므로 세번째 인자로 rowBounds를 넘김
 	}
+
+	public ArrayList<Board> selectListCon(SearchCondition sc, SqlSession sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1)* pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());		
+		
+		return 	(ArrayList)sqlSession.selectList("boardMapper.selectListCon", sc , rowBounds); //두번째 인자는 파라미터 타입이므로 세번째 인자로 rowBounds를 넘김
+	}
+
+	public int countUp(SqlSession sqlSession, int bno) {
+		
+		return sqlSession.update("boardMapper.countUp",bno);
+	}
+
+	public Board selectBoard(SqlSession sqlSession, int bno) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("boardMapper.selectBoard",bno);
+	}
+
+
 
 }

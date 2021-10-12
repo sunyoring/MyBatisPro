@@ -12,6 +12,7 @@
 	</resultMap>
 
 
+
   <select id = "getListCount" resultType="_int">
 		  
 		  SELECT 
@@ -29,6 +30,77 @@
 		JOIN MEMBER ON(BOARD_WRITER=USER_NO)
 		WHERE B.STATUS='Y'
 		ORDER BY BOARD_NO DESC
+  
+  </select>
+  
+  <select id="getListCountCon" parameterType="SearchCondition" resultType = "_int">
+  
+ 	  SELECT 
+	  COUNT(*)
+	  FROM BOARD B
+	  JOIN MEMBER ON(BOARD_WRITER=USER_NO)
+	  WHERE B.STATUS ='Y'
+	  <if test="writer != null">
+	  	AND USER_ID LIKE '%' || #{writer} || '%'
+	  </if>
+	  <if test="title != null">
+	  	AND BOARD_TITLE LIKE '%' || #{title} || '%'
+	  </if>
+	  <if test="content != null">
+	  	AND BOARD_CONTENT LIKE '%' || #{content} || '%'
+	  </if>
+  </select>
+  
+  <select id="selectListCon" parameterType="SearchCondition" resultMap = "boardResultMap">
+	  
+	  SELECT BOARD_NO, BOARD_TITLE, USER_ID, COUNT, CREATE_DATE
+	  FROM BOARD B
+	  JOIN MEMBER ON(BOARD_WRITER=USER_NO)
+	 <!-- WHERE  --> 
+	  
+<!-- 	  <choose>
+	  		<when test="writer != null">
+	  			  	AND USER_ID LIKE '%' || #{writer} || '%'
+	  		
+	  		</when>
+	  		<when test="title != null">
+	  			  	AND BOARD_TITLE LIKE '%' || #{title} || '%'
+	  		
+	  		</when>
+	  		<otherwise>
+	  			  	AND BOARD_CONTENT LIKE '%' || #{content} || '%'
+	  		</otherwise>
+	  </choose> -->
+ 
+ 	<trim prefix="WHERE" prefixOverrides="AND">
+ 		<if test="writer != null">
+	  			  	AND USER_ID LIKE '%' || #{writer} || '%'
+ 		</if>
+ 		<if test="title != null">
+	  			  	AND BOARD_TITLE LIKE '%' || #{title} || '%'
+ 		</if>
+ 		<if test="content != null">
+	  			  	AND BOARD_CONTENT LIKE '%' || #{content} || '%'
+ 		</if>
+ 	</trim>
+ 		AND B.STATUS ='Y'
+   		ORDER BY BOARD_NO DESC
+ 
+ 
+  </select>
+  
+  <update id = "countUp" parameterType="_int">
+  
+  UPDATE BOARD SET COUNT = COUNT+1 WHERE BOARD_NO = #{bno} 
+  </update>
+  
+  
+  <select id = "selectBoard" parameterType="_int" resultMap="boardResultMap">
+  
+ 	SELECT BOARD_NO, BOARD_TITLE, USER_ID, COUNT, CREATE_DATE FROM BOARD B
+ 	JOIN MEMBER ON(BOARD_WRITER=USER_NO)	
+ 	WHERE BOARD_NO = #{bno}
+ 	AND B.STATUS = 'Y'
   
   </select>
   
